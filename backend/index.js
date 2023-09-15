@@ -5,11 +5,10 @@ import cors from "cors";
 import postRoutes from "./routes/post.js";
 
 const app = express();
-
-app.use("/posts",postRoutes);
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+app.use("/posts",postRoutes);
 const MongoDB =
   "mongodb+srv://himanshugangwar2000:Himanshu24@cluster0.mmoc3ht.mongodb.net/?retryWrites=true&w=majority";
 const Port= process.env.Port||5000;
