@@ -5,6 +5,6 @@
   .smMargin {
     margin: theme-spacing(1);
   }
-  actionDiv {
+  .actionDiv {
     text-align: center;
   }
