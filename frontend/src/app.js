@@ -1,43 +1,23 @@
-import React,{ useState,useEffect} from "react";
-import {Container, AppBar, Typography, Grow, Grid} from "@mui/material";
-import { useDispatch } from "react-redux";
-import {getPosts} from './actions/posts';
-
-import Posts from "./components/Posts/posts"
-import Form from "./components/Form/form"
-import memories from "./images/memories.png"
+import React from "react";
+import {Container} from "@mui/material";
 import  "./style.css";
+import Navbar from "./components/Navbar/Navbar";
+import { BrowserRouter,Routes, Route } from "react-router-dom";
+import Home from "./components/Home/home";
+import Auth from "./components/Auth/Auth";
 
 
 const App=()=>{
-    const[currentId, setCurrentId]=useState(null);
-    const dispatch= useDispatch();
-
-    useEffect(()=>{
-        dispatch(getPosts());
-    },[currentId,dispatch]);
-
     return (
+        <BrowserRouter>
         <Container maxWidth="lg">
-            <AppBar  className="appBar" position="static" color="inherit">
-                <Typography className="heading" variant="h2" align="center">
-                    Memories
-                </Typography>
-                <img className="image" src={memories} alt="memories" height="60" />
-            </AppBar>
-            <Grow in>
-                <Container>
-                    <Grid className="mainContainer" container  justify="space-between" alignContent="stretch" spacing={3}>
-                        <Grid item xs={12} sm={7}>
-                            <Posts setCurrentId={setCurrentId}/>
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <Form currentId={currentId} setCurrentId={setCurrentId}/>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Grow>
+            <Navbar/>
+            <Routes>
+                <Route path="/" exact Component={Home} />
+                <Route path="/auth" exact Component={Auth} />
+            </Routes>
         </Container>
+        </BrowserRouter>
         
     );
 }
