@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -12,38 +12,62 @@ import { GoogleLogin } from "@react-oauth/google";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Input from "./input";
 import "./style.css";
-import Icon from "./icon"
+import Icon from "./icon";
 import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
+import {signin, signup} from "../../actions/auth";
+
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
-  const dispatch= useDispatch();
-  const history=useNavigate();
+  const dispatch = useDispatch();
+  const history = useNavigate();
+  const [formData, setFormData] = useState(initialState);
+
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
-  const handleSubmit = () => {};
-  const handleChange = () => {};
-  const switchMode = () => {
-    setIsSignup((prevIsSignup) => !prevIsSignup);
-    handleShowPassword(false);
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isSignup) {
+      dispatch(signup(formData, history));
+    } else {
+      dispatch(signin(formData, history));
+    }
+    console.log(formData);
   };
 
-  const googleSuccess=async (res)=>{
-    const result= jwt_decode(res.credential);
-    const token= res.credential;
-    try{
-      dispatch({type: 'AUTH',data:{result,token}});
-      history('/');
-    }
-    catch(error){
+
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  
+  const switchMode = () => {
+    setIsSignup((prevIsSignup) => !prevIsSignup);
+    setShowPassword(false);
+  };
+
+  const googleSuccess = async (res) => {
+    const result = jwt_decode(res.credential);
+    const token = res.credential;
+    try {
+      dispatch({ type: "AUTH", data: { result, token } });
+      history("/");
+    } catch (error) {
       console.log(error);
     }
     // console.log(token);
     // console.log(result);
   };
-  const googleError=(error)=>{
+  const googleError = (error) => {
     console.log("Google Sign In was unsuccessful. Try Afain Later.");
   };
 

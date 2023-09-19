@@ -5,6 +5,7 @@ import { AppBar, Typography,Button, Toolbar, Avatar } from "@mui/material";
 import memories from "../../images/memories.png";
 import "./style.css";
 import { useDispatch } from "react-redux";
+import decode from 'jwt-decode';
 
 
 
@@ -25,8 +26,11 @@ function Navbar() {
 
   useEffect(()=>{
     const token= user?.token;
+    if (token) {
+      const decodedToken = decode(token);
 
-    //JWT ...
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout();
+    }
     setUser(JSON.parse(localStorage.getItem('profile')));
   },[location]);
 
