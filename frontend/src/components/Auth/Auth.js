@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -13,10 +14,13 @@ import Input from "./input";
 import "./style.css";
 import Icon from "./icon"
 import jwt_decode from "jwt-decode";
+import { useDispatch } from "react-redux";
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const dispatch= useDispatch();
+  const history=useNavigate();
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
   const handleSubmit = () => {};
@@ -27,9 +31,17 @@ const Auth = () => {
   };
 
   const googleSuccess=async (res)=>{
-    const decoded= jwt_decode(res.credential);
-    console.log(res);
-    console.log(decoded);
+    const result= jwt_decode(res.credential);
+    const token= res.credential;
+    try{
+      dispatch({type: 'AUTH',data:{result,token}});
+      history('/');
+    }
+    catch(error){
+      console.log(error);
+    }
+    // console.log(token);
+    // console.log(result);
   };
   const googleError=(error)=>{
     console.log("Google Sign In was unsuccessful. Try Afain Later.");
