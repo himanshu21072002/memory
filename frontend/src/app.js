@@ -5,11 +5,15 @@ import Navbar from "./components/Navbar/Navbar";
 import { BrowserRouter,Routes, Route } from "react-router-dom";
 import Home from "./components/Home/home";
 import Auth from "./components/Auth/Auth";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+
 
 
 const App=()=>{
     return (
-        <BrowserRouter>
+        <GoogleOAuthProvider clientId="812786811306-fdlh33hl35gsrgtjcp39vhau2o7lpcd5.apps.googleusercontent.com">
+            <BrowserRouter>
         <Container maxWidth="lg">
             <Navbar/>
             <Routes>
@@ -18,7 +22,7 @@ const App=()=>{
             </Routes>
         </Container>
         </BrowserRouter>
-        
+        </GoogleOAuthProvider>    
     );
 }
 
